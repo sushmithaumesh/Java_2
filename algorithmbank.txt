@@ -1,0 +1,157 @@
+Bank it 
+Algorithm 
+Overview
+1.	AccountType- describes two types of accounts checking and saving.
+2.	AccountTier- describes two types of account colors Gold and silver.
+3.	User and bank are two interfaces
+4.	Bank interface is like a header to bankteller class.
+5.	Atm operates on the user input and checks if the input fulfills the account number criteria and displays the retires left.
+6.	Account class describes the interest rate applied on each account type when user puts in the account number it sets and gets the account type, tier and balance.
+7.	Bankteller  gets the number and opens the account and applies interest
+8.	BankErrorCodes is a class that represents all the error that can happen while inputting the number.
+
+
+
+There are two interfaces – User and Bank 
+
+Bank Interface
+
+Bank interface is like header files it declares the function prototype that will be implemented in the bank teller class.
+It represents the banking application.
+
+Int accountExists(int accountNumber)
+•	This method checks if the account number exists in the class or not. If the account number exists it returns the true.
+
+Account getAccount(int accountNumber)
+
+•	It checks if the bank account exists if it exists it returns the account if not it throws a null pointer exception.
+
+Void openAccount(int accountNumber,Account account)
+•	The method adds money to the bank account which is mentioned by the user input.
+
+Double addAmount(double amount, Account account)
+•	Adds the amount into the bank account and applies and returns amount multiplied by interest rate.
+
+There are two enumeration 
+1.	First one has the types of account which is checking and saving.
+2.	The second enum is for the account tier which gold and silver.
+3.	Both the enum are public.
+
+
+Account.java
+
+Private 
+•	accountType -it is a new account that is of types checking or savings as it is linked to the account type enum. 
+•	accountTier- it is a new account that is of the types gold or silver as it is linked to account tier enum.
+
+public Account(AccountType accountType, AccountTier accountTier)
+•	The overloaded constructor sets the default value of accountType , accountTier and current balance which is set to 0.
+
+Public double getInterestRate()
+•	The function returns the interest that needs to be put for the account by using conditional operator. So is the accountTier of that account number equals to gold it will give the interest as 0.03 or else it will give it the interest rate 0.01 that is of silver. (?::)
+
+      Public double addAmount(double amount)
+•	The function adds the amount to the current balance at that instance which can be zero because that is the default value in the constructor.
+•	It returns the currentbalance at that instance.
+
+      Public double getBalance()
+
+•	The function is a getter and points at the current balance at that instance and returns it.
+
+
+Public AccountType getAccountType()
+•	The function is a getter and returns the account type of that account number.
+
+Public AccountTier getAccountTier()
+•	The function acts as a getter and returns accountTier of that account number.
+
+Atm.java
+The class is responsible for interacting with the user
+
+Public int get5DigitAccountNumber(int accountNumber, final Scanner scanner, int numberOfRetries)
+•	The function reads account number typed by the user.
+•	Also allow user to enter their account number again if they make or don’t input the number.
+•	There is an if statement with condition that numberoftries==0 then return a error message.
+
+•	There is another if statement with condition isValidAccountNumber(accountNumber), if the condition is met it returns accountNumber.
+
+•	Else it will out put the statement to try inputting the account number again.
+
+•	The scanner takes the yes or no input by the user.
+
+•	A Boolean is set named tryAgain and it is made a condition of if statement so if the condition is met it will output the statement please enter your 5 digit code . And take in the input the user puts.
+
+•	There is another output statement that prints out the number of tries left to enter the bank account number.
+
+•	After the output statement has run the numberofretires decrements by 1.
+
+•	At the end of the loop the the function is returned.
+
+•	Else an output statement is printed that says thank valued customer.
+
+Private Boolean isvalidAccountNumber(final int ccountNumber)
+•	It is Boolean so return if not greater than or lesser than 9999 and 10000.
+
+BankTeller.java
+•	Import account, Bankerrorcodes.
+•	Bank teller is a public class which implements bank class.
+•	Use hashmap to connect to account class
+•	Uses the prototypes from bank interface.
+public BankTeller()
+•	Equates bankAccounts to new HashMap<>
+
+This function is override by public int accountExists(int accountNumber)
+•	We use containsKey which is a method in hashmap to chack if it is mapped.
+•	If account number doesn’t exists it sends a error message.
+Public Account getAccount(int accountNumber)
+•	Has a if condition so if the account number exists it returns the account if not it returns null.
+Public void openAccount(int accountNumber, Account account)
+•	Uses put from hashmap and adds money to the account the user has specified.
+
+Public double addAmount(double amount, Account account)
+•	Uses the getInterestRate function from account class and multiplies that the account balance.
+
+
+
+BankErrorCodes.java
+•	This class represents error codes
+•	Has a public enum called bankerrorcodes.
+•	The enum contains INVALID ACCOUNT NUMBER and ACCOUNT NOT FOUND 
+•	We initialize errorcode to int
+   BankErrorCodes(int errorCode)
+•	It equates errorcode to errorcode at that instance.
+   Public int getErrorCode
+•	Returns errorcode at that instance.
+
+MainApplication 
+
+Import all the classes Account, AccountTier, AccountType, Atm, Bank, BankTeller and BankErrorCodes.
+
+•	It is a public class .
+•	Private static final is when that is the only value and has no instance so RETIRES=3.
+
+Handleuserinput(int userinput,Account account,Bank bank,Scanner scan)
+•	Has a switch loop with condition of user input 
+•	Case 1 is that output the balance in the account by using the getter getBalance. If case 1 is implemented after it is the loop breaks.
+•	Case 2 is that output the statement please enter the amount you want to deposit.
+•	The amount inputted is used to apply the interest on by equating interest rate to add Amount
+•	We output the amount with the interest applied by using addAmount from bankteller class.
+•	Then the loop breaks
+•	Static int getAccountNumberFromUser gets number from the user and puts the atm object on the heap.
+•	It prints out a statement that tells the customer to enter 5 digit code.
+•	We use the get5digit function from atm class and return the value the function outputs.
+•	The main function puts the bankteller object on the heap and initializes some bank accounts.
+•	The getter getAccountNumber from the other class is used to get the account number inputted.
+•	A if condition is made that if the input is not equal to Bankerrorcode class then it prints out account details.
+•	The variable account exists is equated to function account exists from bank teller class.
+•	A if statement is made that if the accountexists is not equal to bankerrorcodes then account equals to getAccount at that instance from bankteller class.
+•	Then it prints out the account options such as type, tier and asks to check balance or deposit money.
+•	The variable user input takes the bank account and a function that handles user input is run.
+•	Else it prints account doesn’t exists.
+•	Initialize data is private and gives a set of account numbers a type and tier and each is put into the heap. 
+•	11111,22222,33333,44444 are the accounts defined.
+
+
+
+
+
